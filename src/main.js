@@ -2,7 +2,31 @@ import Vue from 'vue'
 import VueRouter from 'vue-router';
 import App from './App.vue'
 import { routes} from './routes';
+import VueSimpleAlert from "vue-simple-alert";
 
+
+import { ValidationObserver, ValidationProvider, extend, localize } from 'vee-validate';
+import * as rules from 'vee-validate/dist/rules';
+
+
+
+// install rules and localization
+Object.keys(rules).forEach(rule => {
+  extend(rule, rules[rule]);
+});
+
+
+
+
+// Install components globally
+Vue.component('ValidationObserver', ValidationObserver);
+Vue.component('ValidationProvider', ValidationProvider);
+
+
+window.axios = require('axios');
+
+
+Vue.use(VueSimpleAlert);
 Vue.use(VueRouter);
 
 const router = new VueRouter({

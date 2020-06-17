@@ -1,34 +1,43 @@
 <template>
-    <div>
-        <h3>Edit the User</h3>
-        <p>Locale: {{ $route.query.locale }}</p>
-        <p>Analytics: {{ $route.query.q }}</p>
-        <hr>
-        <button class="btn btn-primary" @click="confrimed = true">Comfirm</button>
-        <div style="height: 700px"></div>
-        <p id="data">Some extra Data</p>
-    </div>
+  <ValidationObserver v-slot="{ invalid }">
+    <form @submit.prevent="onSubmit">
+      <ValidationProvider name="E-mail" rules="required|email" v-slot="{ errors }">
+        <input v-model="email" type="email">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <ValidationProvider name="First Name" rules="required|alpha" v-slot="{ errors }">
+        <input v-model="firstName" type="text">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <ValidationProvider name="Last Name" rules="required|alpha" v-slot="{ errors }">
+        <input v-model="lastName" type="text">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <button type="submit" :disabled="invalid">Submit</button>
+    </form>
+  </ValidationObserver>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            comfrimed: false
-        }
-    },
-    beforeRouteLeave(to, from, next){
-        if(this.confirmed){
-            next();
-        } else {
-            if(confirm('Are you sure ?')){
-                next();
-            }else {
-                next(false);
-            }
-
-        }
+  data: () => ({
+    email: '',
+    firstName: '',
+    lastName: ''
+  }),
+  methods: {
+    onSubmit () {
+      alert('Form has been submitted!');
     }
-
-}
+  }
+};
 </script>
+
+<style scoped>
+span {
+  display: block;
+}
+</style>

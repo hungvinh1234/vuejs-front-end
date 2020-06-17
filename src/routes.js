@@ -6,7 +6,7 @@ import Header from './components/Header.vue';
 const User = resolve => {
     require.ensure(['./components/user/Signup.vue'], () => {
         resolve(require('./components/user/Signup.vue'));
-
+        
     }, 'user');
 };
 

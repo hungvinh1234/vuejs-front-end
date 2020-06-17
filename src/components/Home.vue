@@ -1,17 +1,33 @@
 <template>
     <div>
-    <form>
+    <form
+        @submit="checkForm"
+        action="https://vuejs.org/"
+        method="post"
+        novalidate="true"
+    
+    >
     <div>
         <h1>Login Page</h1>
+            <p v-if="errors.length">
+            <b>Please correct the following error(s):</b>
+            <ul>
+            <li v-for="error in errors" v-bind:key=error>{{ error }}</li>
+            </ul>
+        </p>
+        
         <hr>
           <div class="form-group">
                         <label for="username">Username</label>
+                        <ValidationProvider name="Username" rules="required|alpha_num" v-slot="{ errors }">
                         <input
-                                type="text"
+                                type="require"
                                 id="username"
                                 class="form-control"
-                                :value="userData.username"
-                                @input="userData.username = $event.target.value">
+                                v-model="userData.username"
+                                >
+                        <span style="color:red">{{ errors[0] }}</span>
+                        </ValidationProvider>
         </div>
 
         <div class="form-group">
@@ -33,12 +49,19 @@
                             @click.prevent="submitted">Login
                              
                     </button>
+                    <!-- <input
+                        class="btn btn-primary"
+                        type="submit"
+                        value="Login"
+                    > -->
+
                 </div>
             </div>
     </div>
     </form>
     <hr>
         <div class="row" v-if="isSubmitted">
+
             <div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -55,6 +78,8 @@
 </template>
 
 <script>
+    import axios from 'axios';
+
     
     export default {
         data (){
@@ -64,6 +89,8 @@
                     password: '',
                     age: 27
                 },
+
+                errors: [],
                 message: 'A new Text',
                 sendMail: [],
                 gender: 'Male',
@@ -71,19 +98,83 @@
                 cities: ['Ho Chi Minh', 'Da Nang', 'Ha Noi'],
                 isAdmin: false,
                 isSubmitted: false,
+                isUsernameBlank: false,
 
                 reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
                 
             }
         },
         methods: {
+            
+
+
             submitted(){
                 this.isSubmitted = true;
-            },
+                
+                // Call API
+                axios({
+                method : 'post',
+                url : 'http://localhost:3000/account/signin',
+                data:
+                {
+                    "username": this.userData.username,
+                    "password": this.userData.password,
+                }
+                }).then(res => {
+                    console.log(res);
+                    this.$alert("Login Successful !");
+
+                }).catch(error => {
+                    console.log(error.response.data.message);
+
+                    this.$alert(error.response.data.message);
+                });
+
+                //Check Form
+                if (!this.userData.user) {
+                    this.isUsernameBlank = true;
+                }
+                if(this.userData.user){
+                    this.isUsernameBlank = false;
+                }
+                
+
+                },
 
             isEmailValid: function() {
                 return (this.email == "")? "" : (this.reg.test(this.email)) ? 'has-success' : 'has-error';
             },
+
+            checkForm: function (e) {
+            this.errors = [];
+
+            if (!this.userData.user) {
+                this.errors.push("Name required.");
+            }
+            if (!this.email) {
+                this.errors.push('Email required.');
+            } else if (!this.validEmail(this.email)) {
+                this.errors.push('Valid email required.');
+            }
+
+            if (!this.errors.length) {
+                return true;
+            }
+
+            e.preventDefault();
+            },
+            validEmail: function (email) {
+            var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+            }
+            
+        },
+
+        mounted: function () {
+
+            // axios.post('http://localhost:3000/account/signin')
+            //     .then(response => console.log(response));
+
         },
 
     }
