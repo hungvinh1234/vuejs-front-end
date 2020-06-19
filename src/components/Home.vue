@@ -179,3 +179,9 @@
 
     }
 </script>
+<style scoped>
+    .form-control{
+        width: 30% !important;
+    }
+
+</style>

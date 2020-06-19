@@ -276,7 +276,7 @@
 </template>
 
 <script>
-     
+     import moment from "moment";
      import * as VeeValidate from 'vee-validate';
      import { ValidationProvider } from 'vee-validate';
      import Datepicker from 'vuejs-datepicker';
@@ -343,7 +343,6 @@
                     );
 
                     console.log(this.response);
-                     this.$alert( this.response.data.birthday);
                     })
                     .catch(error => {
                     console.log("bi loi");
@@ -391,7 +390,7 @@
 
               format_date(value) {
                 if (value) {
-                return moment(String(value)).format("YYYY-MM-DD");
+                return moment(String(value)).format("DD-MM-YYYY");
             }
          }
         },

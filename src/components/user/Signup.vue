@@ -405,4 +405,8 @@
 span {
   display: block;
 }
+.form-control{
+        width: 40% !important;
+    }
+
 </style>
