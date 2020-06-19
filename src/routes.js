@@ -38,6 +38,14 @@ const UserDetail = resolve => {
     }, 'user');
 };
 
+const UserList = resolve => {
+    require.ensure(['./components/user/UserList.vue'], () => {
+        resolve(require('./components/user/UserList.vue'));
+
+    }, 'user');
+};
+
+
 export const routes = [
     { path: '', name: 'home', components: {
         default: Home,
@@ -49,9 +57,18 @@ export const routes = [
         'header-top': Header
     } },
 
-    { path: '/dashboard', name: 'dashboard', components: {
+    { path: '/userdetail', name: 'userdetail', components: {
         default: UserDetail,
     } },
+
+    { path: '/userlist', name: 'userlist', components: {
+        default: UserList,
+    } },
+
+    { path: '/useredit', name: 'useredit', components: {
+        default: UserEdit,
+    } },
+
     { path: '/user', components: {
         default: User,
         'header-top': Header

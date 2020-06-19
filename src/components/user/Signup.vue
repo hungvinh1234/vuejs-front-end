@@ -125,8 +125,22 @@
                             v-bind:key="city"> {{ city }}</option>
                     </select>
                 
-            </div>
-                    <div class="form-group">
+                    </div>
+
+                     <div class="form-group">
+                    <label for="university">University</label>
+                    <select
+                            id="city"
+                            class="form-control"
+                            v-model="selectedUniversity">
+                        <option 
+                            v-for="university in universities" 
+                            v-bind:key="university"> {{ university }}</option>
+                    </select>
+                
+                    </div>
+
+                    <!-- <div class="form-group">
                         <label for="university">Graduated University</label>
                         <ValidationProvider name="University" rules="required|alpha" v-slot="{ errors }">
                         <input
@@ -136,7 +150,7 @@
                                 v-model="userData.university">
                         <span style="color:red">{{ errors[0] }}</span>
                         </ValidationProvider>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label for="">Starting Date</label>
@@ -158,8 +172,11 @@
                     </div>
 
                     <div class="form-group">
-                <label for="">Is Admin</label>                  
-                    <div>
+                        
+                        <label for="">Is Admin</label>
+                            <input type="checkbox" id="admin" v-model="IsAdminChecked">
+                                   
+                    <!-- <div>
                     <label for="admin">
                         <input
                                 type="radio"
@@ -174,7 +191,9 @@
                                 value=false
                                 v-model="userData.isAdmin"> User
                     </label>
-                    </div>
+                    </div> -->
+
+
                  </div>
 
                 </div>
@@ -224,10 +243,10 @@
                         <p>Gender: {{ userData.gender }}</p>
                         <p>Address: {{ userData.address }}</p>
                         <p>City: {{ selectedCity }}</p>
-                        <p>Graduated University: {{ userData.university}} </p>
+                        <p>Graduated University: {{ selectedUniversity}} </p>
                         <p>Starting Date: {{ userData.startday }}</p>
                         <p>Reference User: {{ userData.ref_user }}</p>
-                        <p>Is Admin: {{ userData.isAdmin }}</p>
+                        <p>Is Admin: {{ IsAdminChecked }}</p>
 
                     </div>
                 </div>
@@ -255,7 +274,6 @@
                 userData: {
                     username: null,
                     password: null,
-                    age: 27,
                     isAdmin: "false",
                     gender: 1,
 
@@ -266,8 +284,12 @@
                 message: 'A new Text',
                 sendMail: [],
                 
+
                 selectedCity: 'Ho Chi Minh',
                 hometown: ['Ho Chi Minh', 'Da Nang', 'Ha Noi'],
+
+                selectedUniversity: 'UIT',
+                universities: ['UIT', 'HCMUS', 'USSH','HCMUT'],
                 
                 isSubmitted: false,
                 isUsernameBlank: false,
@@ -353,11 +375,11 @@
                     "gender": this.userData.gender,
                     "address": this.userData.address,
                     "hometown": this.selectedCity,
-                    "university": this.userData.university,
+                    "university": this.selectedUniversity,
                     "ref_user": this.userData.ref_user,
                     "start_date": this.userData.startday,
                     "birthday": this.userData.birthday,
-                    "is_admin": this.userData.isAdmin
+                    "is_admin": this.IsAdminChecked
 
                 }
                 }).then(res => {
