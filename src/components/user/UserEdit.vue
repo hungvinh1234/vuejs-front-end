@@ -327,9 +327,14 @@
         methods: {
 
             LoadData() {
+                let storedToken = localStorage.getItem("token")
+
                 axios({
                     method: "post",
-                    url: "http://localhost:3000/account/90"
+                    url: `http://localhost:3000/account/${this.$route.params.id}`,
+                    headers: {
+                        'Authorization': `Bearer ${storedToken}`
+                    }
                 })
                     .then(res => {
                     this.response = res;
@@ -352,10 +357,13 @@
 
             submitted(){
                 this.isSubmitted = true;
-
+                let storedToken = localStorage.getItem("token")
                 axios({
                 method : 'put',
-                url : 'http://localhost:3000/account/90/edit',
+                url: `http://localhost:3000/account/${this.$route.params.id}/edit`,
+                headers: {
+                        'Authorization': `Bearer ${storedToken}`
+                    },
                 data:
                 {
                     "username": this.userData.username,

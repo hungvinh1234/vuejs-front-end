@@ -42,9 +42,17 @@
     </b-modal> -->
 
     <div>
-    <b-button @click="modalShow = !modalShow">Open Modal</b-button>
+      <ul class="nav nav-pills">
+          <button
+                            
+                            class="btn btn-primary"
+                            @click.prevent="submitted">Edit
+                             
+                    </button>   
+    </ul>
+    <!-- <b-button @click="modalShow = !modalShow">Open Modal</b-button>
 
-    <b-modal v-model="modalShow">Hello From Modal!</b-modal>
+    <b-modal v-model="modalShow">Hello From Modal!</b-modal> -->
   </div>
     
 
@@ -66,7 +74,7 @@ export default {
 
     modalShow: false,
 
-
+      storedToken: "",
       response: "",
       link: {
         name: "userEdit",
@@ -100,9 +108,16 @@ export default {
   methods: {
     
     LoadData() {
+      
+      this.storedToken = localStorage.getItem("token")
+      
       axios({
         method: "post",
-        url: "http://localhost:3000/account/90"
+        url: `http://localhost:3000/account/${this.$route.params.id}`,
+        headers: {
+            'Authorization': `Bearer ${this.storedToken}`
+      }
+
       })
         .then(res => {
           this.response = res;
@@ -135,6 +150,13 @@ export default {
       if (value) {
         return moment(String(value)).format("YYYY-MM-DD");
       }
+    },
+
+    submitted(){
+      
+      this.$router.push("/user/"+ this.response.data.id+"/edit")
+
+
     }
   }
 };

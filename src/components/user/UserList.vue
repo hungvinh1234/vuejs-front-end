@@ -46,13 +46,21 @@ export default {
     }
   },
   mounted: function() {
+    
+    let storedToken = localStorage.getItem("token")
+
     axios({
       method: "post",
-      url: "http://localhost:3000/account/userlist"
+      url: "http://localhost:3000/account/userlist",
       // data: null
       // {
 
       // }
+      headers: {
+                        'Authorization': `Bearer ${storedToken}`
+                    }
+
+
     })
       .then(res => {
         this.response = res;
@@ -69,7 +77,7 @@ export default {
       })
       .catch(error => {
         console.log(error.response);
-        // this.$alert(error.response);
+        this.$alert(error.response.data.message);
       });
   },
 

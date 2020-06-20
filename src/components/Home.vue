@@ -114,7 +114,7 @@
                 // Call API
                 axios({
                 method : 'post',
-                url : 'http://localhost:3000/account/signin',
+                url : 'http://localhost:3000/signin',
                 data:
                 {
                     "username": this.userData.username,
@@ -122,10 +122,12 @@
                 }
                 }).then(res => {
                     console.log(res);
+                    localStorage.setItem("token", res.data.token)
+                    this.$router.push("/user/"+ res.data.id)
                     this.$alert("Login Successful !");
 
                 }).catch(error => {
-                    console.log(error.response.data.message);
+                    console.log(error);
 
                     this.$alert(error.response.data.message);
                 });
